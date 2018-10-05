@@ -17,7 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screens.welcome.WelcomeActivity"></activity>
+        <activity android:name=".screens.welcome.WelcomeActivity" />
+        <activity android:name=".screens.start.StartActivity" android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
