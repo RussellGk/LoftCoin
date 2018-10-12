@@ -13,12 +13,10 @@ public class LaunchActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Prefs prefs = ((App)getApplication()).getPrefs();
-
-        if(prefs.isFirstLaunch()){
+        if(prefs.isFirstLaunch()) {
             WelcomeActivity.startInNewTask(this);
-        }else {
+        } else {
             StartActivity.startInNewTask(this);
         }
     }
