@@ -21,6 +21,7 @@
     <color name="grey_60">#2e2f47</color>
     <color name="grey_80">#191a2a</color>
     <color name="grey_100">#10101a</color>
+    <color name="state_checked_false">#51526B</color>
 
 
 </resources>
