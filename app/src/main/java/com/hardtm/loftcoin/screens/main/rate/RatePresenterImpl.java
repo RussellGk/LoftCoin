@@ -3,7 +3,12 @@ package com.hardtm.loftcoin.screens.main.rate;
 import android.support.annotation.Nullable;
 
 import com.hardtm.loftcoin.data.api.Api;
+import com.hardtm.loftcoin.data.api.model.RateResponse;
 import com.hardtm.loftcoin.data.prefs.Prefs;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RatePresenterImpl implements RatePresenter {
 
@@ -29,12 +34,28 @@ public class RatePresenterImpl implements RatePresenter {
 
     @Override
     public void getRate() {
+        api.ticker("array", prefs.getFiatCurrency().name()).enqueue(new Callback<RateResponse>() {
+            @Override
+            public void onResponse(Call<RateResponse> call, Response<RateResponse> response) {
+                if(view != null && response.body() != null) {
+                    view.setCoins(response.body().data);
+                    view.setRefreshing(false);
+                }
+            }
 
+            @Override
+            public void onFailure(Call<RateResponse> call, Throwable t) {
+                if(view != null) {
+                    view.setRefreshing(false);
+                }
+
+            }
+        });
     }
 
     @Override
     public void onRefresh() {
-
+        getRate();
     }
 
 

@@ -9,6 +9,7 @@
     <color name="yellow">#f5ff30</color>
     <color name="green">#3fe77b</color>
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
 
     <color name="red_accent200">#ff4465</color>
     <color name="amber400">#f6ca1d</color>
@@ -22,6 +23,7 @@
     <color name="grey_80">#191a2a</color>
     <color name="grey_100">#10101a</color>
     <color name="state_checked_false">#51526B</color>
-
+    <color name="even">#212237</color>
+    <color name="odd">#19192a</color>
 
 </resources>
