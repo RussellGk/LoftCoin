@@ -11,6 +11,8 @@ public class DatabaseInitializer {
     public Database init(Context context) {
         AppDatabase appDatabase = Room
                 .databaseBuilder(context, AppDatabase.class,"loftcoin.db")
+                .fallbackToDestructiveMigration() // Drop all old data if needs the migration
+                .allowMainThreadQueries() //Allows work in UI Thread
                 .build();
 
         return new DatabaseImplRoom(appDatabase);
