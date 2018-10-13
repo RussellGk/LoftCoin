@@ -21,8 +21,6 @@ import butterknife.ButterKnife;
 
 public class StartActivity extends AppCompatActivity implements StartView {
 
-    private static final String TAG = "StartActivity";
-
     public static void startInNewTask(Context context){
         Intent starter = new Intent(context, StartActivity.class);
         starter.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

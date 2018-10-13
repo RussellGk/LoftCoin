@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_icon_accounts"
+        android:icon="@drawable/ic_wallet"
+        android:title="@string/main_bottom_navigation_item_accounts"/>
+    <item
+        android:id="@+id/menu_icon_rate"
+        android:icon="@drawable/ic_rate"
+        android:title="@string/main_bottom_navigation_item_rate"/>
+    <item
+        android:id="@+id/menu_icon_converter"
+        android:icon="@drawable/ic_converter"
+        android:title="@string/main_bottom_navigation_item_converter"/>
+</menu>

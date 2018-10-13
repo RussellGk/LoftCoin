@@ -7,8 +7,10 @@
     <dimen name="spacing_12">12dp</dimen>
     <dimen name="spacing_16">16dp</dimen>
     <dimen name="spacing_18">18dp</dimen>
+    <dimen name="spacing_24">24dp</dimen>
     <dimen name="spacing_32">32dp</dimen>
     <dimen name="spacing_55">55dp</dimen>
+    <dimen name="spacing_62">62dp</dimen>
     <dimen name="spacing_64">64dp</dimen>
     <dimen name="spacing_130">130dp</dimen>
     <dimen name="spacing_150">150dp</dimen>
