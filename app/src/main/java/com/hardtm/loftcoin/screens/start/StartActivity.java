@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import com.hardtm.loftcoin.App;
 import com.hardtm.loftcoin.R;
 import com.hardtm.loftcoin.data.api.Api;
+import com.hardtm.loftcoin.data.db.Database;
+import com.hardtm.loftcoin.data.db.model.CoinEntityMapper;
 import com.hardtm.loftcoin.data.prefs.Prefs;
 import com.hardtm.loftcoin.screens.main.MainActivity;
 
@@ -42,7 +44,10 @@ public class StartActivity extends AppCompatActivity implements StartView {
         ButterKnife.bind(this);
         Api api = ((App)getApplication()).getApi();
         Prefs prefs = ((App)getApplication()).getPrefs();
-        presenter = new StartPresenterImpl(api, prefs);
+        Database database = ((App)getApplication()).getDatabase();
+        CoinEntityMapper mapper = new CoinEntityMapper();
+
+        presenter = new StartPresenterImpl(api, prefs, database, mapper);
         presenter.attechView(this);
         presenter.loadRate();
     }
