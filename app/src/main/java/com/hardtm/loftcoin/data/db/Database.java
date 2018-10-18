@@ -12,4 +12,5 @@ public interface Database {
 
     Flowable<List<CoinEntity>> getCoins();
 
+    CoinEntity getCoin(String symbol);
 }
