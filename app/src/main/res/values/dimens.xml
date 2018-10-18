@@ -7,9 +7,13 @@
     <dimen name="spacing_12">12dp</dimen>
     <dimen name="spacing_16">16dp</dimen>
     <dimen name="spacing_18">18dp</dimen>
+    <dimen name="spacing_20">20dp</dimen>
     <dimen name="spacing_24">24dp</dimen>
     <dimen name="spacing_32">32dp</dimen>
+    <dimen name="spacing_40">40dp</dimen>
     <dimen name="spacing_55">55dp</dimen>
+    <dimen name="spacing_56">56dp</dimen>
+    <dimen name="spacing_60">60dp</dimen>
     <dimen name="spacing_62">62dp</dimen>
     <dimen name="spacing_64">64dp</dimen>
     <dimen name="spacing_130">130dp</dimen>
@@ -18,6 +22,7 @@
     <dimen name="spacing_168">168dp</dimen>
     <dimen name="spacing_200">200dp</dimen>
     <dimen name="spacing_300">300dp</dimen>
+    <dimen name="text_14">14sp</dimen>
     <dimen name="text_16">16sp</dimen>
     <dimen name="text_24">24sp</dimen>
     <dimen name="text_48">48sp</dimen>
