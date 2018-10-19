@@ -18,7 +18,10 @@ import android.widget.TextView;
 import com.hardtm.loftcoin.App;
 import com.hardtm.loftcoin.R;
 import com.hardtm.loftcoin.data.db.Database;
+import com.hardtm.loftcoin.data.db.model.CoinEntity;
 import com.hardtm.loftcoin.data.model.Currency;
+import com.hardtm.loftcoin.screens.currencies.CurrenciesBottomSheet;
+import com.hardtm.loftcoin.screens.currencies.CurrenciesBottomSheetListener;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.Random;
@@ -64,6 +67,20 @@ public class ConverterFragment extends Fragment {
     private Unbinder unbinder;
     private Random random = new Random();
 
+    private CurrenciesBottomSheetListener sourceListener = new CurrenciesBottomSheetListener() {
+        @Override
+        public void onCurrencySelected(CoinEntity coin) {
+            viewModel.onSourceCurrencySelected(coin);
+        }
+    };
+
+    private CurrenciesBottomSheetListener destinationListener = new CurrenciesBottomSheetListener() {
+        @Override
+        public void onCurrencySelected(CoinEntity coin) {
+            viewModel.onDestinationCurrencySelected(coin);
+        }
+    };
+
     private static int[] colors = {
             0xFFF5FF30,
             0xFFFFFFFF,
@@ -72,6 +89,12 @@ public class ConverterFragment extends Fragment {
             0xFFFF7420,
             0xFF534FFF,
     };
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        viewModel.saveState(outState);
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,6 +117,19 @@ public class ConverterFragment extends Fragment {
         destinationCurrencySymbolIcon = destinationCurrency.findViewById(R.id.symbol_icon);
         destinationCurrencySymbolName = destinationCurrency.findViewById(R.id.currency_name);
 
+        if(savedInstanceState == null) {
+            sourceAmount.setText("1");
+        }
+
+        Fragment bottomSheetSource = getFragmentManager().findFragmentByTag(SOURCE_CURRENCY_BOTTOM_SHEET_TAG);
+        if(bottomSheetSource != null) {
+            ((CurrenciesBottomSheet) bottomSheetSource).setListener(sourceListener);
+        }
+        Fragment bottomSheetDestination = getFragmentManager().findFragmentByTag(DESTINATION_CURRENCY_BOTTOM_SHEET_TAG);
+        if(bottomSheetDestination != null) {
+            ((CurrenciesBottomSheet) bottomSheetDestination).setListener(destinationListener);
+        }
+
         initOutputs();
         initInputs();
     }
@@ -110,6 +146,8 @@ public class ConverterFragment extends Fragment {
                 .subscribe(textEvent -> {
                     viewModel.onSourceAmountChange(textEvent.editable().toString());
                 });
+        sourceCurrency.setOnClickListener(v -> viewModel.onSourceCurrencyClick());
+        destinationCurrency.setOnClickListener(v -> viewModel.onDestinationCurrencyClick());
         disposables.add(disposable1);
     }
 
@@ -117,10 +155,14 @@ public class ConverterFragment extends Fragment {
         Disposable disposable1 = viewModel.sourceCurrency().subscribe(currency -> bindCurrency(currency, sourceCurrencySymbolIcon, sourceCurrencySymbolText, sourceCurrencySymbolName));
         Disposable disposable2 = viewModel.destinationCurrency().subscribe(currency -> bindCurrency(currency, destinationCurrencySymbolIcon, destinationCurrencySymbolText, destinationCurrencySymbolName));
         Disposable disposable3 = viewModel.destinationAmount().subscribe(s -> destinationAmount.setText(s));
+        Disposable disposable4 = viewModel.selectSourceCurrency().subscribe(o -> showCurrencyBottomSheet(true));
+        Disposable disposable5 = viewModel.selectDestinationCurrency().subscribe(o -> showCurrencyBottomSheet(false));
 
         disposables.add(disposable1);
         disposables.add(disposable2);
         disposables.add(disposable3);
+        disposables.add(disposable4);
+        disposables.add(disposable5);
 
     }
 
@@ -137,9 +179,18 @@ public class ConverterFragment extends Fragment {
             Drawable wrapped = DrawableCompat.wrap(background);
             DrawableCompat.setTint(wrapped, colors[random.nextInt(colors.length)]);
             symbolText.setText(String.valueOf(cur.charAt(0)));
-
         }
-
         currencyName.setText(cur);
+    }
+
+    private void showCurrencyBottomSheet(boolean source) {
+        CurrenciesBottomSheet bottomSheet = new CurrenciesBottomSheet();
+        if(source) {
+            bottomSheet.show(getFragmentManager(), SOURCE_CURRENCY_BOTTOM_SHEET_TAG);
+            bottomSheet.setListener(sourceListener);
+        }else {
+            bottomSheet.show(getFragmentManager(), DESTINATION_CURRENCY_BOTTOM_SHEET_TAG);
+            bottomSheet.setListener(destinationListener);
+        }
     }
 }

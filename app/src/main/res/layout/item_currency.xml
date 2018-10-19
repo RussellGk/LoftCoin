@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/spacing_56"
+    android:background="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:paddingEnd="@dimen/spacing_24"
+    android:paddingStart="@dimen/spacing_24">
+    <FrameLayout
+        android:id="@+id/currency_symbol"
+        android:layout_width="@dimen/spacing_20"
+        android:layout_height="@dimen/spacing_20">
+        <TextView
+            android:id="@+id/symbol_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textStyle="bold"
+            android:textColor="@color/grey_50"
+            android:background="@drawable/bg_coin_symbol_white"
+            tools:ignore="MissingPrefix"
+            tools:text="A"/>
+        <ImageView
+            android:id="@+id/symbol_icon"
+            android:tint="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </FrameLayout>
+    <TextView
+        android:id="@+id/currency_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_28"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="@dimen/text_14"
+        android:textColor="@color/white"
+        tools:text="Bitcoin | BTC"/>
+</LinearLayout>
