@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import com.hardtm.loftcoin.data.api.Api;
 import com.hardtm.loftcoin.data.db.Database;
 import com.hardtm.loftcoin.data.db.model.CoinEntityMapper;
+import com.hardtm.loftcoin.data.model.Fiat;
 import com.hardtm.loftcoin.data.prefs.Prefs;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -58,7 +59,13 @@ public class RatePresenterImpl implements RatePresenter {
         disposables.add(disposable);
     }
 
-    private void loadRate() {
+    private void loadRate(Boolean fromRefresh) {
+
+        if(!fromRefresh) {
+            if(view != null) {
+                view.showProgress();
+            }
+        }
 
         Disposable disposable = api.ticker("array", prefs.getFiatCurrency().name())
                 .subscribeOn(Schedulers.io())
@@ -71,12 +78,18 @@ public class RatePresenterImpl implements RatePresenter {
                 .subscribe(
                         object -> {
                             if(view != null) {
-                                view.setRefreshing(false);
+                                if(fromRefresh) {
+                                    view.setRefreshing(false);
+                                }else {
+                                    view.hideProgress();
+                                }
                             }
                         },
                         throwable -> {
-                            if(view != null) {
+                            if(fromRefresh) {
                                 view.setRefreshing(false);
+                            }else {
+                                view.hideProgress();
                             }
                         }
                 );
@@ -86,8 +99,17 @@ public class RatePresenterImpl implements RatePresenter {
 
     @Override
     public void onRefresh() {
-        loadRate();
+        loadRate(true);
     }
 
+    @Override
+    public void onMenuItemCurrencyClick() {
+        view.showCurrencyDialog();
+    }
 
+    @Override
+    public void onFiatCurrencySelected(Fiat currency) {
+        prefs.setFiatCurrency(currency);
+        loadRate(false);
+    }
 }
