@@ -62,14 +62,11 @@
                 tools:text="$ 15 000,00"/>
             <TextView
                 android:id="@+id/primary_amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_above="@id/secondary_amount"
                 android:layout_alignParentEnd="true"
                 android:layout_marginBottom="@dimen/spacing_6"
                 android:layout_marginEnd="@dimen/spacing_16"
-                android:textColor="@color/white"
-                android:textStyle="bold"
+                style="@style/TextWrapWhiteBold"
                 android:textSize="@dimen/text_16"
                 tools:text="2.77744 BTC"/>
         </RelativeLayout>
