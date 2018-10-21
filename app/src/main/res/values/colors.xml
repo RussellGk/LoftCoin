@@ -25,5 +25,6 @@
     <color name="state_checked_false">#51526B</color>
     <color name="even">#212237</color>
     <color name="odd">#19192a</color>
+    <color name="wallet_card_bg">#2e2f47</color>
 
 </resources>
