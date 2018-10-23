@@ -14,15 +14,12 @@
         layout="@layout/layout_currency"/>
     <TextView
         android:id="@+id/price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_toEndOf="@id/currency"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/spacing_12"
         android:gravity="end"
-        android:textColor="@color/white"
         android:textSize="@dimen/text_16"
-        android:textStyle="bold"
+        style="@style/TextWrapWhiteBold"
         tools:text="$4 808,00"/>
     <TextView
         android:id="@+id/percent_change"
