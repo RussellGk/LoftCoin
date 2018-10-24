@@ -99,7 +99,7 @@ public class RateFragment extends Fragment implements RateView, Toolbar.OnMenuIt
         }
         Fragment fragment = getFragmentManager().findFragmentByTag(CurrencyDialog.TAG);
         if(fragment != null) {
-            ((CurrencyDialog) fragment).setListener(this);
+            ((CurrencyDialog) fragment).setListener(this, adapter);
         }
         presenter.attechView(this);
         presenter.getRate();
@@ -146,7 +146,7 @@ public class RateFragment extends Fragment implements RateView, Toolbar.OnMenuIt
     @Override
     public void showCurrencyDialog() {
         CurrencyDialog dialog = new CurrencyDialog();
-        dialog.setListener(this);
+        dialog.setListener(this, adapter);
         dialog.show(getFragmentManager(), CurrencyDialog.TAG);
     }
 
