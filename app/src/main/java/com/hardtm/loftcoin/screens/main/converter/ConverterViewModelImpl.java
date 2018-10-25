@@ -7,10 +7,8 @@ import com.hardtm.loftcoin.data.db.model.CoinEntity;
 import com.hardtm.loftcoin.utils.CurrencyFormatter;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.PublishSubject;
 
@@ -34,6 +32,7 @@ public class ConverterViewModelImpl implements ConverterViewModel {
 
     ConverterViewModelImpl(Bundle savedInstanceState, Database database) {
         this.database = database;
+        database.open();
         if(savedInstanceState != null) {
             sourceCurrencySymbol = savedInstanceState.getString(KEY_SOURCE_CURRENCY);
             destinationCurrencySymbol = savedInstanceState.getString(KEY_DESTINATION_CURRENCY);
@@ -43,12 +42,8 @@ public class ConverterViewModelImpl implements ConverterViewModel {
 
     private void loadCoins() {
         Disposable disposable1 = Observable.fromCallable(() -> database.getCoin(sourceCurrencySymbol))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onSourceCurrencySelected);
         Disposable disposable2 = Observable.fromCallable(() -> database.getCoin(destinationCurrencySymbol))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::onDestinationCurrencySelected);
         disposables.add(disposable1);
         disposables.add(disposable2);
@@ -131,5 +126,10 @@ public class ConverterViewModelImpl implements ConverterViewModel {
         double destinationValue = sourceValue * sourceCoin.usd.price/destinationCoin.usd.price;
         String destinationAmountValue = String.valueOf(currencyFormatter.formatForConverter(destinationValue));
         destinationAmount.onNext(destinationAmountValue);
+    }
+
+    @Override
+    public void onDetach() {
+        database.close();
     }
 }

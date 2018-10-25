@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.hardtm.loftcoin.R;
 import com.hardtm.loftcoin.data.db.model.QuoteEntity;
-import com.hardtm.loftcoin.data.db.model.WalletModel;
+import com.hardtm.loftcoin.data.db.model.Wallet;
 import com.hardtm.loftcoin.data.model.Currency;
 import com.hardtm.loftcoin.data.model.Fiat;
 import com.hardtm.loftcoin.data.prefs.Prefs;
@@ -30,14 +30,14 @@ import butterknife.ButterKnife;
 public class WalletsPagerAdapter extends PagerAdapter {
 
     private static final String TAG = "WalletsPagerAdapter";
-    private List<WalletModel> wallets = Collections.emptyList();
+    private List<Wallet> wallets = Collections.emptyList();
     private Prefs prefs;
 
     public WalletsPagerAdapter(Prefs prefs) {
         this.prefs = prefs;
     }
 
-    public void setWallets(List<WalletModel> wallets) {
+    public void setWallets(List<Wallet> wallets) {
         this.wallets = wallets;
         notifyDataSetChanged();
     }
@@ -104,19 +104,19 @@ public class WalletsPagerAdapter extends PagerAdapter {
             this.prefs = prefs;
         }
 
-        void bind(WalletModel model) {
-            bindCurrency(model);
-            bindSymbol(model);
-            bindPrimaryAmount(model);
-            bindSecondaryAmount(model);
+        void bind(Wallet wallet) {
+            bindCurrency(wallet);
+            bindSymbol(wallet);
+            bindPrimaryAmount(wallet);
+            bindSecondaryAmount(wallet);
         }
 
-        private void bindCurrency(WalletModel model) {
-            currency.setText(model.coin.symbol);
+        private void bindCurrency(Wallet wallet) {
+            currency.setText(wallet.coin.symbol);
         }
 
-        private void bindSymbol(WalletModel model) {
-            Currency currency = Currency.getCurrency(model.coin.symbol);
+        private void bindSymbol(Wallet wallet) {
+            Currency currency = Currency.getCurrency(wallet.coin.symbol);
             if(currency != null) {
                 symbolIcon.setVisibility(View.VISIBLE);
                 symbolText.setVisibility(View.GONE);
@@ -128,19 +128,19 @@ public class WalletsPagerAdapter extends PagerAdapter {
                 Drawable background = symbolText.getBackground();
                 Drawable wrapped = DrawableCompat.wrap(background);
                 DrawableCompat.setTint(wrapped, colors[random.nextInt(colors.length)]);
-                symbolText.setText(String.valueOf(model.coin.symbol.charAt(0)));
+                symbolText.setText(String.valueOf(wallet.coin.symbol.charAt(0)));
             }
         }
 
-        private void bindPrimaryAmount(WalletModel model) {
-            String value = currencyFormatter.format(model.wallet.amount, true);
-            primaryAmount.setText(itemView.getContext().getString(R.string.currency_amount, value, model.coin.symbol));
+        private void bindPrimaryAmount(Wallet wallet) {
+            String value = currencyFormatter.format(wallet.amount, true);
+            primaryAmount.setText(itemView.getContext().getString(R.string.currency_amount, value, wallet.coin.symbol));
         }
 
-        private void bindSecondaryAmount(WalletModel model) {
+        private void bindSecondaryAmount(Wallet wallet) {
             Fiat fiat = prefs.getFiatCurrency();
-            QuoteEntity quote = model.coin.getQuote(fiat);
-            double amount = model.wallet.amount * quote.price;
+            QuoteEntity quote = wallet.coin.getQuote(fiat);
+            double amount = wallet.amount * quote.price;
             String value = currencyFormatter.format(amount, false);
             secondaryAmount.setText(itemView.getContext().getString(R.string.currency_amount, value, fiat.symbol));
         }
