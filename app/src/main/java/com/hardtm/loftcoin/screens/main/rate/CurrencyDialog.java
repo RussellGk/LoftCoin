@@ -16,6 +16,7 @@ public class CurrencyDialog extends DialogFragment {
 
     public static final String TAG = "CurrencyDialog";
     private CurrencyDialogListener listener;
+    private RateAdapter adapter;
 
     @NonNull
     @Override
@@ -32,6 +33,7 @@ public class CurrencyDialog extends DialogFragment {
             dismiss();
             if(listener != null) {
                 listener.onCurrencySelected(Fiat.USD);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -39,6 +41,7 @@ public class CurrencyDialog extends DialogFragment {
             dismiss();
             if(listener != null) {
                 listener.onCurrencySelected(Fiat.EUR);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -46,6 +49,7 @@ public class CurrencyDialog extends DialogFragment {
             dismiss();
             if(listener != null) {
                 listener.onCurrencySelected(Fiat.RUB);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -56,7 +60,8 @@ public class CurrencyDialog extends DialogFragment {
         void onCurrencySelected(Fiat currency);
     }
 
-    public void setListener(CurrencyDialogListener listener) {
+    public void setListener(CurrencyDialogListener listener, RateAdapter adapter) {
         this.listener = listener;
+        this.adapter = adapter;
     }
 }

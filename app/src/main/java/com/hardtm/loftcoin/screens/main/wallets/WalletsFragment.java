@@ -134,6 +134,10 @@ public class WalletsFragment extends Fragment implements CurrenciesBottomSheetLi
         viewModel.selectCurrency().observe(this, o -> {
             showCurrenciesBottomSheet();
         });
+
+        viewModel.scrollToNewWallet().observe(this, o -> {
+            walletsPager.setCurrentItem(walletsPagerAdapter.getCount() - 1, true);
+        });
     }
 
     private void showCurrenciesBottomSheet() {

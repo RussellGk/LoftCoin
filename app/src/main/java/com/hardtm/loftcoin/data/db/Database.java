@@ -2,9 +2,7 @@ package com.hardtm.loftcoin.data.db;
 
 import com.hardtm.loftcoin.data.db.model.CoinEntity;
 import com.hardtm.loftcoin.data.db.model.Transaction;
-import com.hardtm.loftcoin.data.db.model.TransactionModel;
 import com.hardtm.loftcoin.data.db.model.Wallet;
-import com.hardtm.loftcoin.data.db.model.WalletModel;
 
 import java.util.List;
 
@@ -18,11 +16,15 @@ public interface Database {
 
     void saveTransaction(List<Transaction> transactions);
 
-    Flowable<List<TransactionModel>> getTransactions(String walletId);
+    Flowable<List<Transaction>> getTransactions(String walletId);
 
     Flowable<List<CoinEntity>> getCoins();
 
-    Flowable<List<WalletModel>> getWallets();
+    Flowable<List<Wallet>> getWallets();
 
     CoinEntity getCoin(String symbol);
+
+    void open();
+
+    void close();
 }
