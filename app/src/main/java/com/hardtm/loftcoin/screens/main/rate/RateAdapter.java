@@ -31,6 +31,7 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateViewHolder
 
     private List<CoinEntity> coins = Collections.emptyList();
     private Prefs prefs;
+    private Listener listener = null;
 
     RateAdapter(Prefs prefs) {
         this.prefs = prefs;
@@ -39,6 +40,10 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateViewHolder
     public void setCoins(List<CoinEntity> coins) {
         this.coins = coins;
         notifyDataSetChanged();
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -50,7 +55,7 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RateViewHolder holder, int position) {
-        holder.bind(coins.get(position), position);
+        holder.bind(coins.get(position), position, listener);
     }
 
     @Override
@@ -96,12 +101,13 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateViewHolder
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(CoinEntity coin, int position) {
+        void bind(CoinEntity coin, int position, Listener listener) {
             bindIcon(coin);
             bindSymbol(coin);
             bindPrice(coin);
             bindPercentage(coin);
             bindBackground(position);
+            bindListener(coin, listener);
         }
 
         private  void bindBackground(int position) {
@@ -116,11 +122,12 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateViewHolder
 
             QuoteEntity quote = coin.getQuote(prefs.getFiatCurrency());
             float percentChangeValue = quote.percentChange24h;
-            percentChange.setText(context.getString(R.string.rate_item_percent_change, percentChangeValue));
 
             if(percentChangeValue >= 0){
+                percentChange.setText("+" + context.getString(R.string.rate_item_percent_change, percentChangeValue));
                 percentChange.setTextColor(context.getResources().getColor(R.color.green));
             } else {
+                percentChange.setText(context.getString(R.string.rate_item_percent_change, percentChangeValue));
                 percentChange.setTextColor(context.getResources().getColor(R.color.red_accent200));
             }
         }
@@ -152,5 +159,18 @@ public class RateAdapter extends RecyclerView.Adapter<RateAdapter.RateViewHolder
                 symbolText.setText(String.valueOf(coin.symbol.charAt(0)));
             }
         }
+
+        private void bindListener(CoinEntity coin, Listener listener) {
+            itemView.setOnLongClickListener(view -> {
+                if(listener != null) {
+                    listener.onRateLongClick(coin.symbol);
+                }
+                return false;
+            });
+        }
+    }
+
+    interface Listener {
+        void onRateLongClick(String symbol);
     }
 }
